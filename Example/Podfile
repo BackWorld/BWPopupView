@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '9.0'
+
+target 'BWPopupView_Example' do
+  pod 'BWPopupView', :path => '../'
+
+  target 'BWPopupView_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
