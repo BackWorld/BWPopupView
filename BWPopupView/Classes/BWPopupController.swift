@@ -53,6 +53,12 @@ public class BWPopupController: UIViewController {
         self.view = BWPopupView_FilterUserInteractionView(frame: UIScreen.main.bounds)
     }
     
+    public override func viewWillLayoutSubviews() {
+        view.frame = UIScreen.main.bounds
+        
+        super.viewWillLayoutSubviews()
+    }
+    
     private var filterView: BWPopupView_FilterUserInteractionView? {
         return view as? BWPopupView_FilterUserInteractionView
     }
@@ -97,9 +103,7 @@ public class BWPopupController: UIViewController {
             filterView?.userInteractionResponsibleViews.append(wrapperView)
         }
         
-        updatePopupLayouts()
-        
-        animatePopupView()
+        updateLayouts()
     }
     
     private func updatePopupLayouts() {
@@ -157,18 +161,25 @@ public class BWPopupController: UIViewController {
     }
     
     public func show(controller: UIViewController, at holder: UIViewController) {
+        show(at: holder)
+        
         addChild(controller)
         controller.didMove(toParent: self)
-        
-        holder.view.addSubview(view)
-        holder.addChild(self)
-        didMove(toParent: holder)
     }
     
     public func show(at holder: UIViewController) {
-        holder.view.addSubview(view)
-        holder.addChild(self)
-        didMove(toParent: holder)
+        modalPresentationStyle = .overCurrentContext
+        holder.present(self, animated: false, completion: nil)
+    }
+    
+    public func updateLayouts(senderRect: CGRect? = nil){
+        if let rect = senderRect {
+            popup.senderRect = rect
+        }
+        
+        updatePopupLayouts()
+        
+        animatePopupView()
     }
     
     public func dismiss(completion: (()->Void)? = nil) {
@@ -176,9 +187,11 @@ public class BWPopupController: UIViewController {
             guard $0, let self = self else {
                 return
             }
-            self.view.removeFromSuperview()
-            self.removeFromParent()
-            completion?()
+//            self.view.removeFromSuperview()
+//            self.removeFromParent()
+//            completion?()
+            
+            self.dismiss(animated: false, completion: completion)
         }
     }
 
