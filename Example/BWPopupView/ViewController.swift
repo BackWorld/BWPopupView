@@ -7,18 +7,20 @@
 //
 
 import UIKit
+import BWPopupView
 
 class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+    @IBAction func showPopup(_ sender: UIControl) {
+        let view = UIView(frame: .init(origin: .zero, size: .init(width: 100, height: 44)))
+        view.backgroundColor = .red
+        
+        BWPopup.show(view: view, configure: .init(senderView: sender, backgroundColor: .red))
+//        BWPopup.show(view: view, configure: .init(senderRect: view.frame, backgroundColor: .red))
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    @IBAction func showCustom(_ sender: UIControl) {
+        let vc = storyboard!.instantiateViewController(withIdentifier: "CustomPopup")
+        BWPopup.show(controller: vc, configure: .init(senderView: sender, popupSize: .init(width: 200, height: 300), blockable: false))
     }
-
 }
 

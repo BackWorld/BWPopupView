@@ -1,0 +1,16 @@
+PODS:
+  - BWPopupView (0.1.0)
+
+DEPENDENCIES:
+  - BWPopupView (from `../`)
+
+EXTERNAL SOURCES:
+  BWPopupView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  BWPopupView: 1d35fcc378fe7f60f5922551d44bb16fc3b48646
+
+PODFILE CHECKSUM: 3c7e49a461f1b032e105318c4eb0e7f8be852146
+
+COCOAPODS: 1.11.2
