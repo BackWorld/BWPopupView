@@ -22,12 +22,11 @@ public class BWPopupController: UIViewController {
     private lazy var popupView: UIView = {
         let v = UIView()
         v.clipsToBounds = true
-        v.addSubview(contentView)
         return v
     }()
-    private lazy var arrowView = BWArrowView()
+    private lazy var arrowView = BWArrowView(frame: .zero)
     private lazy var wrapperView: UIView = {
-        let v = UIView()
+        let v = UIView(frame: .zero)
         v.clipsToBounds = true
         v.alpha = 0
         v.backgroundColor = .clear
@@ -36,13 +35,15 @@ public class BWPopupController: UIViewController {
         return v
     }()
     
-    public lazy var contentView = UIView(frame: .zero)
-    public lazy var popup = BWPopup(popupSize: contentView.bounds.size)
+    private var originalContentFrame: CGRect!
+    public weak var contentView: UIView?
+    public lazy var popup = BWPopup()
     
     public init(popup: BWPopup, contentView: UIView){
         super.init(nibName: nil, bundle: nil)
         self.popup = popup
         self.contentView = contentView
+        self.originalContentFrame = contentView.frame
     }
     
     public required init?(coder: NSCoder) {
@@ -66,9 +67,8 @@ public class BWPopupController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        if contentView.bounds.size != .zero, popup.popupSize == .zero {
-            popup.popupSize = contentView.bounds.size
-        }
+        setupContentView()
+        
         setupPopupView()
     }
     
@@ -80,6 +80,15 @@ public class BWPopupController: UIViewController {
         }
         let selfRect = superview.convert(rect, to: view)
         return selfRect
+    }
+    
+    private func setupContentView(){
+        if let view = contentView {
+            popupView.addSubview(view)
+        }
+        if let size = contentView?.bounds.size, size != .zero, popup.popupSize == .zero {
+            popup.popupSize = size
+        }
     }
     
     private func setupPopupView(){
@@ -118,7 +127,7 @@ public class BWPopupController: UIViewController {
         }
         popupView.frame = layouts.popupViewFrame
         arrowView.frame = layouts.arrowViewFrame
-        contentView.frame = layouts.popupContentViewFrame
+        contentView?.frame = layouts.popupContentViewFrame
         arrowView.direction = layouts.arrowViewDirection
     }
     
@@ -157,7 +166,9 @@ public class BWPopupController: UIViewController {
     }
     
     private var popupAnimateAnchorPoint: CGPoint {
-        return .init(x: arrowView.frame.midX/popupView.frame.width, y: arrowView.frame.midY/popupView.frame.height)
+        let x = min(1, max(0, arrowView.frame.midX/popupView.frame.width))
+        let y = min(1, max(0, arrowView.frame.midY/popupView.frame.height))
+        return .init(x: x, y: y)
     }
     
     public func show(controller: UIViewController, at holder: UIViewController) {
@@ -187,10 +198,7 @@ public class BWPopupController: UIViewController {
             guard $0, let self = self else {
                 return
             }
-//            self.view.removeFromSuperview()
-//            self.removeFromParent()
-//            completion?()
-            
+            self.contentView?.frame = self.originalContentFrame
             self.dismiss(animated: false, completion: completion)
         }
     }
@@ -209,3 +217,4 @@ public class BWPopupController: UIViewController {
         dismiss()
     }
 }
+

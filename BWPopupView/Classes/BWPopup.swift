@@ -7,28 +7,28 @@
 
 import Foundation
 
-public enum BWArrowDirection {
-    case any
+public enum BWArrowDirection: Int {
+    case any = 0
     case left,up,right,down
 }
 
 enum BWPopupPosition: Int {
     case any = 0
-    case bottom,right,top,left
+    case right,bottom,left,top
 }
 
 public class BWPopup {
-    var senderRect: CGRect?
-    var senderView: UIView?
-    var margin: CGFloat
-    var contentInsets: UIEdgeInsets
-    var backgroundColor: UIColor
-    var maskColor: UIColor
-    var blockable: Bool
-    var cornerRadius: CGFloat
-    var popupSize: CGSize
-    var arrowSize: CGSize
-    var arrowDirection: BWArrowDirection
+    public var senderRect: CGRect?
+    public var senderView: UIView?
+    public var margin: CGFloat
+    public var contentInsets: UIEdgeInsets
+    public var backgroundColor: UIColor
+    public var maskColor: UIColor
+    public var blockable: Bool
+    public var cornerRadius: CGFloat
+    public var popupSize: CGSize
+    public var arrowSize: CGSize
+    public var arrowDirection: BWArrowDirection
     
     public convenience init(senderRect: CGRect){
         self.init(senderRect: senderRect, senderView: nil)
@@ -44,7 +44,7 @@ public class BWPopup {
         arrowDirection: BWArrowDirection = .any,
         backgroundColor: UIColor = .black,
         margin: CGFloat = 10,
-        contentInsets: UIEdgeInsets = .zero,
+        contentInsets: UIEdgeInsets = .init(top: 10, left: 10, bottom: 10, right: 10),
         blockable: Bool = true,
         maskColor: UIColor = .clear,
         cornerRadius: CGFloat = 10,
