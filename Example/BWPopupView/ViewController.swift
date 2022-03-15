@@ -26,8 +26,13 @@ class ViewController: UIViewController {
         
         senderView = sender
         
-        popup = BWPopup.show(view: view, configure: .init(senderView: sender, backgroundColor: .red))
-//        BWPopup.show(view: view, configure: .init(senderRect: sender.frame, backgroundColor: .red))
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                self.popup = BWPopup.show(view: view, configure: .init(senderView: sender, backgroundColor: .red))
+            }
+        }
+        
+//        popup = BWPopup.show(view: view, configure: .init(senderRect: sender.frame, backgroundColor: .red))
     }
     
     @IBAction func showCustom(_ sender: UIControl) {

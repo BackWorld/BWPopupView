@@ -75,7 +75,7 @@ extension BWPopup {
         view: UIView,
         configure: BWPopup,
         for holder: UIViewController? = UIApplication.bwPopupView_appCurrentVC
-    ) -> BWPopupController {
+    ) -> BWPopupController? {
         guard let holder = holder else {
             fatalError("Must has a root view controller for current application!")
         }
@@ -83,7 +83,8 @@ extension BWPopup {
         let popupVC = BWPopupController(popup: configure, contentView: view)
         popupVC.show(at: holder)
         
-        return popupVC
+        weak var weakVC = popupVC
+        return weakVC
     }
     
     @discardableResult
@@ -91,15 +92,15 @@ extension BWPopup {
         controller: UIViewController,
         configure: BWPopup,
         for holder: UIViewController? = UIApplication.bwPopupView_appCurrentVC
-    ) -> BWPopupController  {
+    ) -> BWPopupController?  {
         guard let holder = holder else {
             fatalError("Must has a root view controller for current application!")
         }
-
         let popupVC = BWPopupController(popup: configure, contentView: controller.view)
         popupVC.show(controller: controller, at: holder)
         
-        return popupVC
+        weak var weakVC = popupVC
+        return weakVC
     }
 }
 

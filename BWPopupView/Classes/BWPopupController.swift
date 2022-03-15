@@ -36,7 +36,7 @@ public class BWPopupController: UIViewController {
     }()
     
     private var originalContentFrame: CGRect!
-    public weak var contentView: UIView?
+    public var contentView: UIView?
     public lazy var popup = BWPopup()
     
     public init(popup: BWPopup, contentView: UIView){
